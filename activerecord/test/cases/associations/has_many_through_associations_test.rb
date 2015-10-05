@@ -878,7 +878,17 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
       book.subscriber_ids = []
       assert_equal [], book.subscribers.reload
     end
+  end
 
+  def test_collection_singular_ids_setter_with_nonstandard_primary_keys
+    assert_nothing_raised do
+      organization = organizations(:nsa)
+      organization.author_ids = [authors(:mary).name]
+      assert_equal [authors(:mary)], organization.authors.reload
+
+      organization.author_ids = []
+      assert_equal [], organization.authors.reload
+    end
   end
 
   def test_collection_singular_ids_setter_raises_exception_when_invalid_ids_set
